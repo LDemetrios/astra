@@ -46,8 +46,10 @@ addTerms [acc: T] : T
 ```
 
 Here `acc: T` is an inherited attribute, `: T` is synthesized one.
-Results of each "subrule" are saved into variable with respective name. Is there is only one of a kind, it's of the same
-type, as a type of its synthesized attribute. If there are many, it's a list of those. You can pass both single
+Results of each "subrule" are saved into variable with respective name. If there is only one of a kind, it's of the same
+type, as a type of its synthesized attribute. If there are many, it's a list of those.
+
+You can pass both single
 identifiers and code inserts as inherited attributes:
 
 ```
