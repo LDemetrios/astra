@@ -1,7 +1,7 @@
 # ASTra
 
 <div align="right"><p style='align: right;'>
-<a href="README.md"><img src="/flags/UK.png" alt="Russian" width="6%" style="float: right;" align="right"> </a> <a href="README-RU.md"><img src="/flags/RU.png" alt="Russian" width="6%" style="float: right;" align="right"></a>
+<a href="README.md"><img src="/flags/UK.png" alt="Russian" width="6%" align="right"> </a> <a href="README-RU.md"><img src="/flags/RU.png" alt="Russian" width="6%"  align="right"></a>
 </p></div>
 
 This is a toy parser generator. It parses LL-1 grammar and creates a Lexer and a Parser, written in Kotlin. It supports
