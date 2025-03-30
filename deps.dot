@@ -1,0 +1,13 @@
+digraph deps {
+    node [shape=rect];
+
+    "api" -> "generator-common" -> "generator"
+
+    "api" -> "functions"
+    "api" -> "calculator"
+    "api" -> "recursion"
+    "generator-common" -> "recursion"
+
+    { rank = same; "functions"; "calculator"; "recursion"; }
+    "generator" -> "recursion" [style=invis]; # forces layout
+}

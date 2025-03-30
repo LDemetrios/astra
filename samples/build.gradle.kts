@@ -27,6 +27,38 @@ val sourceSetNames = listOf(
     "main", "test"
 )
 
+fun generateWith(generator: String) {
+    val bundles = mapOf(
+        "main" to File("$projectDir/src")
+    )
+
+    for ((name, dir) in bundles) {
+        val grammars = dir.walkTopDown().filter { it.extension == "g" }
+        for (grammar in grammars) {
+            val location = grammar.parentFile.relativeTo(dir)
+            val dest = "${layout.buildDirectory.get()}/generated-src/astra/$name/$location"
+            println(grammar.absolutePath + ", " + dest)
+            val error = ByteArrayOutputStream()
+            val result = exec {
+                commandLine(
+                    "java",
+                    "-jar",
+                    "$rootDir/artifacts/generator-1.0-all.jar",
+//                            "$rootDir/artifacts/recursion-1.0-all.jar",
+                    grammar.absolutePath,
+                    dest
+                )
+                errorOutput = error
+                isIgnoreExitValue = true
+            }
+            if (result.exitValue != 0) {
+                println(error.toString())
+                result.assertNormalExitValue()
+            }
+        }
+    }
+}
+
 subprojects {
     apply(plugin = "org.jetbrains.kotlin.jvm")
 
@@ -51,35 +83,13 @@ subprojects {
     tasks.register("generateAstra") {
         dependsOn(":generator:shadowJar")
         doLast {
-            val bundles = mapOf(
-                "main" to File("$projectDir/src")
-            )
+            generateWith("$rootDir/artifacts/generator-1.0-all.jar")
+        }
+    }
 
-            for ((name, dir) in bundles) {
-                val grammars = dir.walkTopDown().filter { it.extension == "g" }
-                for (grammar in grammars) {
-                    val location = grammar.parentFile.relativeTo(dir)
-                    val dest = "${layout.buildDirectory.get()}/generated-src/astra/$name/$location"
-                    println(grammar.absolutePath + ", " + dest)
-                    val error = ByteArrayOutputStream()
-                    val result = exec {
-                        commandLine(
-                            "java",
-                            "-jar",
-                            "$rootDir/artifacts/generator-1.0-all.jar",
-//                            "$rootDir/artifacts/recursion-1.0-all.jar",
-                            grammar.absolutePath,
-                            dest
-                        )
-                        errorOutput = error
-                        isIgnoreExitValue = true
-                    }
-                    if (result.exitValue != 0) {
-                        println(error.toString())
-                        result.assertNormalExitValue()
-                    }
-                }
-            }
+    tasks.register("generateAstraWithExample") {
+        doLast {
+            generateWith("$rootDir/artifacts/recursion-1.0-all.jar")
         }
     }
 

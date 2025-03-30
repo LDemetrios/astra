@@ -17,7 +17,7 @@ class Test : FreeSpec({
         reparse("fun (Int).plus(other: String) : String")
 
         shouldThrow<ParsingException> {
-            // This is very poorly translates into LL(1)
+            // This very poorly translates into LL(1)
             reparse("fun Int.plus(other: String) : String")
         }
     }
